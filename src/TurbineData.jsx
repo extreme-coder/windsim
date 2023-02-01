@@ -24,7 +24,8 @@ const TurbineData = (props) => {
   }
 
   const [turbine, setTurbine] = useState('Vestas V126-3450')
-  const { data: s, error } = useGetSpeedQuery({ ...props.coords, turbine: turbine })
+  const [height, setHeight] = useState(100)
+  const { data: s, error } = useGetSpeedQuery({ ...props.coords, turbine: turbine, height: height })
  
   const monthMap = {
     "2019-01-31": "January",
@@ -67,6 +68,10 @@ const TurbineData = (props) => {
     console.log(event.target.value)
     setTurbine(event.target.value)
     props.updateData(getChartData(s))
+  }
+
+  const handleHeightChange = (event) => {
+    setHeight(event.target.value*2)
   }
   
   return (
@@ -142,6 +147,7 @@ const TurbineData = (props) => {
               />}
             </Row>
           </Container>
+          <Form.Range onChange={handleHeightChange} defaultValue={50} /> 
         </Modal.Body>
       </Modal>}
       {!s && !error && <Spinner animation="border" role="status">
