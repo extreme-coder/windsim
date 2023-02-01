@@ -78,12 +78,13 @@ const TurbineData = (props) => {
     <div>
       {s && showCard && <Card style={{ width: '18rem' }} bg={color} onMouseEnter={() => { props.select(props.id, true); setColor('info') }} onMouseLeave={() => { props.select(props.id, false); setColor('') }}>
         <Card.Body>
-          <Card.Title>{Math.round(100 * getChartData(s).map(a => a.speed).reduce((a, b) => a + b, 0) / 12) / 100.00} m/s - {speedDesc(s)}</Card.Title>
-          <Form.Select value={turbine} onChange={handleChange}>
+          <Card.Title>{`(${Math.round(props.coords.lat*100)/100}, ${Math.round(props.coords.lng*100)/100})`}</Card.Title>
+          <Card.Text>{Math.round(100 * getChartData(s).map(a => a.speed).reduce((a, b) => a + b, 0) / 12) / 100.00} m/s - {speedDesc(s)}</Card.Text>
+          {/*<Form.Select value={turbine} onChange={handleChange}>
             <option>Vestas V126-3450</option>
             <option>Vestas V105-3450</option>
             <option>Vestas V110-2000</option>
-          </Form.Select>
+          </Form.Select>*/}
           <p/>
           <ButtonGroup>
             <Button variant="outline-primary" onClick={handleShow}>View Data</Button>
