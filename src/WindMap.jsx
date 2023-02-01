@@ -114,7 +114,7 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
                 }]
               }}
             />}
-            {coords.length > 0 && <h5>{coords.length} turbines generating {Math.round(chartData.map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData.map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} homes</h5>}
+            {coords.length > 0 && <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData.map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData.map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>}
             {coords.length === 0 && <h5>No turbines yet. Click on the map to place one!</h5>}
           </Col>
         </Col>
