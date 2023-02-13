@@ -11,20 +11,31 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
   const [clicks, setClicks] = useState([]);
   const [coords, setCoords] = useState([]);
   const [currentCoord, setCurrentCoord] = useState({ lat: 0, lng: 0 })
-  const [chartData, setChartData] = useState([
-    {month: "January", power: 0},
-    {month: "February", power: 0},
-    {month: "March", power: 0},
-    {month: "April", power: 0},
-    {month: "May", power: 0},
-    {month: "June", power: 0},
-    {month: "July", power: 0},
-    {month: "August", power: 0},
-    {month: "September", power: 0},
-    {month: "October", power: 0},
-    {month: "November", power: 0},
-    {month: "December", power: 0}
-  ])
+  const chartData = (turbineData) => {
+    let c = [
+      { month: 'January', power: 0 },
+      { month: 'February', power: 0 },
+      { month: 'March', power: 0 },
+      { month: 'April', power: 0 },
+      { month: 'May', power: 0 },
+      { month: 'June', power: 0 },
+      { month: 'July', power: 0 },
+      { month: 'August', power: 0 },
+      { month: 'September', power: 0 },
+      { month: 'October', power: 0 },
+      { month: 'November', power: 0 },
+      { month: 'December', power: 0 }
+    ]
+    turbineData.forEach((data) => {
+      data.forEach((d, i) => {
+        let dataOriginal = c[i]
+        c[i] = {...dataOriginal, power: dataOriginal.power + d.power}
+      })
+    })
+    return c
+  }
+
+  const [turbineData, setTurbineData] = useState([])
 
   useEffect(() => {
     /*new window.google.maps.Map(ref.current, {
@@ -55,10 +66,6 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
     }
   }, [map, useOnClick])
 
-  useEffect(() => {
-    console.log(chartData.map(a=>a.power).reduce((a, b) => a + b, 0)/(5*12))
-  }, [chartData])
-
   const useRemoveMarker = (id) => {
     setCoords(coords.filter((c, i) => i !== id))
     useState()
@@ -73,9 +80,10 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
     return 
   }
 
-  const updateChartData = (d) => {
-    console.log(chartData.map((a,i) => ({month: a.month, power: a.power + d[i].power})))
-    setChartData(chartData.map((a,i) => ({month: a.month, power: a.power + d[i].power})))
+  const updateChartData = (d, id) => {
+    let copy = [...turbineData]
+    copy[id] = d
+    setTurbineData(copy)
   }
 
   const onDrag = (e) => {
@@ -107,14 +115,14 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
                 }
               }}
               data={{
-                labels: chartData.map(a => a.month),
+                labels: chartData(turbineData).map(a => a.month),
                 datasets: [{
                   label: "Average Power Output (kWh)",
-                  data: chartData.map(a => a.power)
+                  data: chartData(turbineData).map(a => a.power)
                 }]
               }}
             />}
-            {coords.length > 0 && <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData.map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData.map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>}
+            {coords.length > 0 && <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>}
             {coords.length === 0 && <h5>No turbines yet. Click on the map to place one!</h5>}
           </Col>
         </Col>

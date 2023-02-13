@@ -59,15 +59,14 @@ const TurbineData = (props) => {
     }
     if (s && !counted) {
       setCounted(true)
-      props.updateData(getChartData(s))
+      props.updateData(getChartData(s), props.id)
     }
   }, [error, s]);
 
   const handleChange = (event) => {
-    props.updateData(getChartData(s).map(a => ({...a, power: (0-a.power)})))
     console.log(event.target.value)
     setTurbine(event.target.value)
-    props.updateData(getChartData(s))
+    props.updateData(getChartData(s), props.id)
   }
 
   const handleHeightChange = (event) => {
@@ -89,7 +88,7 @@ const TurbineData = (props) => {
           <ButtonGroup>
             <Button variant="outline-primary" onClick={handleShow}>View Data</Button>
             <Button variant="outline-danger" onClick={() => {
-              props.updateData(getChartData(s).map(a => ({...a, power: (0-a.power)})))
+              props.updateData(getChartData(s))
               props.removeMarker(props.id)
             }}>Delete</Button>
           </ButtonGroup>
