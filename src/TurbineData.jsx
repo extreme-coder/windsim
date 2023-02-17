@@ -102,7 +102,7 @@ const TurbineData = (props) => {
           <Modal.Title>{Math.round(100 * getChartData(s).map(a => a.speed).reduce((a, b) => a + b, 0) / 12) / 100.00} m/s - {speedDesc(s)}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Container>
+          {/*<Container>
             <Row>
               <Form.Group>
                 <Form.Select value={turbine} onChange={handleChange}>
@@ -147,7 +147,15 @@ const TurbineData = (props) => {
               />}
             </Row>
           </Container>
-          <Form.Range onChange={handleHeightChange} defaultValue={50} /> 
+          <Form.Range onChange={handleHeightChange} defaultValue={50} />*/}
+          <Info
+            turbine={turbine}
+            handleChange={handleChange}
+            getChartData={getChartData}
+            s={s}
+            handleHeightChange={handleHeightChange}
+            height={height}
+          />
         </Modal.Body>
       </Modal>}
       {!s && !error && <Spinner animation="border" role="status">
