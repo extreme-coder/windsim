@@ -37,7 +37,7 @@ const App = () => {
           } />
           <Route path='app' element={
             <Wrapper apiKey="AIzaSyBUskhPL5cY5JADoaPrmaqA5IgdTlg7KVY" render={render}>
-              {<WindMap center={center} zoom={zoom} />}
+              {<WindMap center={center} zoom={zoom} mapTypeId={mapTypeId} />}
             </Wrapper>
           } />
           <Route path='about' element={
