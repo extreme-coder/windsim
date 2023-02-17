@@ -21,7 +21,7 @@ const App = () => {
     <div style={{ height: '100vh', width: '100%' }}>
       <Navbar bg="dark" variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand href="">WINDSIM</Navbar.Brand>
+          <Navbar.Brand href="home" style={{fontSize: '24px', fontFamily: 'archivo-black'}}>WINDSIM</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="">Home</Nav.Link>
             <Nav.Link href="app">App</Nav.Link>
