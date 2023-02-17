@@ -70,7 +70,7 @@ const TurbineData = (props) => {
   }
 
   const handleHeightChange = (event) => {
-    setHeight(event.target.value*2)
+    setHeight(parseInt(event.target.value)+50)
   }
   
   return (
