@@ -5,7 +5,7 @@ import Marker from './Marker';
 import { useGetSpeedQuery } from './services/windsim';
 import TurbineData from "./TurbineData";
 
-function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: number; }) {
+function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLiteral; zoom: number; }) {
   const ref = useRef();
   const [map, setMap] = useState()
   const [clicks, setClicks] = useState([]);

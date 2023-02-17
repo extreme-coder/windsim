@@ -3,6 +3,7 @@ import { useGetSpeedQuery } from "./services/windsim";
 import Chart from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2';
 import { Alert, Button, ButtonGroup, Card, Col, Container, Form, Modal, Row, Spinner } from "react-bootstrap";
+import Info from "./Info";
 
 const TurbineData = (props) => {
 
