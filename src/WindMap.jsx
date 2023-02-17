@@ -42,8 +42,10 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
       center,
       zoom,
     });*/
-    setMap(new window.google.maps.Map(ref.current, {center,
-      zoom,}))
+    setMap(new window.google.maps.Map(ref.current, {
+      center,
+      zoom, mapTypeId
+    }))
   }, [center, zoom]);
 
   const useOnClick = (e) => {

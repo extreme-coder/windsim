@@ -16,6 +16,7 @@ const render = (status: Status): ReactElement => {
 const App = () => {
   const center = { lat: 49, lng: -123 };
   const zoom = 7
+  const mapTypeId = 'hybrid'
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
