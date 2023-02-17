@@ -100,11 +100,11 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
     <Container fluid>
       <Row>
         <Col >
-          <div ref={ref} id="map" style={{ width: "1000px", height: "800px" }} />
+          <div ref={ref} id="map" style={{ width: `${window.innerHeight * (5 / 4) * 0.925}px`, height: `${window.innerHeight * 0.925}px` }} />
           {coords.map((c, i) => (<Marker key={i} position={c.latLng} map={map} id={i} isSelected={c.selected} hasData={c.hasData} onDrag={onDrag} />))}
         </Col>
-        <Col>
-          <Col>
+        {coords.length > 0 && <>
+          <Col sm={2} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925}px` }}>
             {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} />)}
           </Col>
           <Col>
@@ -124,10 +124,10 @@ function WindMap({ center, zoom }: { center: google.maps.LatLngLiteral; zoom: nu
                 }]
               }}
             />}
-            {coords.length > 0 && <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>}
-            {coords.length === 0 && <h5>No turbines yet. Click on the map to place one!</h5>}
+            <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>
           </Col>
-        </Col>
+        </>}
+        {coords.length === 0 && <Col><h4>No turbines yet. Click on the map to place one!</h4></Col>}
       </Row>
     </Container>
   </>;
