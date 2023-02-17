@@ -15,9 +15,9 @@ export const windsimApi = createApi({
   endpoints: (builder) => ({
     getSpeed: builder.query({
       query: (arg) => {
-        const { lat, lng, turbine } = arg;
+        const { lat, lng, turbine, height } = arg;
         console.log(turbine)
-        return `wind/?lat=${lat}&lon=${lng}&height=84&date_from=2019-01-01&date_to=2019-12-31&turbine=${turbine}&mean=month`
+        return `wind/?lat=${lat}&lon=${lng}&height=${height}&date_from=2019-01-01&date_to=2019-12-31&turbine=${turbine}&mean=month`
       },
       responseHandler: "text",
       transformResponse: (response: { data: Post }, meta, arg) => {
