@@ -16,6 +16,14 @@ const TurbineData = (props) => {
     }))
   }
 
+  const getEmpty = (s) => {
+    return s.slice(0, 12).map(a => ({
+      month: monthMap[a.datetime],
+      speed: 0,
+      power: 0
+    }))
+  }
+
   const speedDesc = (s) => {
     let avg = getChartData(s).map(a => a.speed).reduce((a, b) => a + b, 0) / 12.00
     if(avg > 9.25){return "Very High Wind"}
@@ -77,7 +85,7 @@ const TurbineData = (props) => {
   return (
     <div>
       <p/>
-      {s && showCard && <Card style={{ width: 'flex' }} bg={color} border={'danger'} onMouseEnter={() => { props.select(props.id, true); setColor('info') }} onMouseLeave={() => { props.select(props.id, false); setColor('') }}>
+      {s && showCard && <Card style={{width: 'flex'}} bg={color} border={'danger'} onMouseEnter={() => { props.select(props.id, true); setColor('info') }} onMouseLeave={() => { props.select(props.id, false); setColor('') }}>
         <Card.Body>
           <Card.Title>{`(${Math.round(props.coords.lat*100)/100}, ${Math.round(props.coords.lng*100)/100})`}</Card.Title>
           <Card.Text>{Math.round(100 * getChartData(s).map(a => a.speed).reduce((a, b) => a + b, 0) / 12) / 100.00} m/s - {speedDesc(s)}</Card.Text>
@@ -90,7 +98,7 @@ const TurbineData = (props) => {
           <ButtonGroup>
             <Button variant="outline-primary" onClick={handleShow}>View Data</Button>
             <Button variant="outline-danger" onClick={() => {
-              props.updateData(getChartData(s))
+              props.updateData(getEmpty(s), props.id)
               props.removeMarker(props.id)
             }}>Delete</Button>
           </ButtonGroup>
