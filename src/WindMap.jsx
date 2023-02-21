@@ -29,7 +29,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
     turbineData.forEach((data) => {
       data.forEach((d, i) => {
         let dataOriginal = c[i]
-        c[i] = {...dataOriginal, power: dataOriginal.power + d.power}
+        c[i] = { ...dataOriginal, power: dataOriginal.power + d.power }
       })
     })
     return c
@@ -52,7 +52,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
     console.log('test')
     setCoords([...coords, { lat: e.latLng.lat(), lng: e.latLng.lng(), latLng: e.latLng, id: Math.random() * 100.00, selected: false, hasData: true }])
     setClicks([...clicks, e.latLng]);
-    setCurrentCoord({lat: e.latLng.lat(), lng: e.latLng.lng()})
+    setCurrentCoord({ lat: e.latLng.lat(), lng: e.latLng.lng() })
     return true
   };
 
@@ -74,12 +74,12 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
   }
 
   const select = (id, state) => {
-    setCoords(coords.map((c,i) => (i === id)? {...c, selected: state}:{...c, selected: false} ))
+    setCoords(coords.map((c, i) => (i === id) ? { ...c, selected: state } : { ...c, selected: false }))
   }
 
   const noData = (id) => {
-    setCoords(coords.map((c,i) => (i === id) ? { ...c, hasData: false } : c))
-    return 
+    setCoords(coords.map((c, i) => (i === id) ? { ...c, hasData: false } : c))
+    return
   }
 
   const updateChartData = (d, id) => {
@@ -90,21 +90,21 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
 
   const onDrag = (e) => {
     console.log(e)
-    setCoords([...coords.filter(c=>(c.latLng.lat !== e.latLng.lat() && c.latLng.lng !== e.latLng.lng())), { lat: e.latLng.lat(), lng: e.latLng.lng(), latLng: e.latLng, id: Math.random() * 100.00, selected: false, hasData: true }])
+    setCoords([...coords.filter(c => (c.latLng.lat !== e.latLng.lat() && c.latLng.lng !== e.latLng.lng())), { lat: e.latLng.lat(), lng: e.latLng.lng(), latLng: e.latLng, id: Math.random() * 100.00, selected: false, hasData: true }])
     setClicks([...clicks, e.latLng]);
-    setCurrentCoord({lat: e.latLng.lat(), lng: e.latLng.lng()})
+    setCurrentCoord({ lat: e.latLng.lat(), lng: e.latLng.lng() })
     return true
   }
 
   return <>
     <Container fluid>
       <Row>
-        <Col >
+        <Col>
           <div ref={ref} id="map" style={{ width: `${window.innerHeight * (5 / 4) * 0.925}px`, height: `${window.innerHeight * 0.925}px` }} />
           {coords.map((c, i) => (<Marker key={i} position={c.latLng} map={map} id={i} isSelected={c.selected} hasData={c.hasData} onDrag={onDrag} />))}
         </Col>
-        {coords.length > 0 && <>
-          <Col sm={2} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925}px` }}>
+        {coords.length > 0 && <Col>
+          <Col sm={'full'} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925 - 250}px` }}>
             {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} />)}
           </Col>
           <Col>
@@ -126,7 +126,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
             />}
             <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>
           </Col>
-        </>}
+        </Col>}
         {coords.length === 0 && <Col><h4>No turbines yet. Click on the map to place one!</h4></Col>}
       </Row>
     </Container>
