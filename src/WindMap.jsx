@@ -104,7 +104,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
           {coords.map((c, i) => (<Marker key={i} position={c.latLng} map={map} id={i} isSelected={c.selected} hasData={c.hasData} onDrag={onDrag} />))}
         </Col>
         {coords.length > 0 && <Col>
-          <Col sm={'full'} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925 - 250}px` }}>
+          <Col sm={'full'} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925 - 255}px` }}>
             {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} />)}
           </Col>
           <Col>
