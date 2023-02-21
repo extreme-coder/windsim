@@ -24,7 +24,7 @@ const App = () => {
         <Container>
           <Navbar.Brand href="home" style={{fontSize: '24px', fontFamily: 'archivo-black'}}>WINDSIM</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="">Home</Nav.Link>
+            <Nav.Link href="home">Home</Nav.Link>
             <Nav.Link href="app">App</Nav.Link>
             <Nav.Link href="about">About Us</Nav.Link>
           </Nav>
@@ -33,6 +33,9 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path='' element={
+            <Home/>
+          } />
+          <Route path='home' element={
             <Home/>
           } />
           <Route path='app' element={
