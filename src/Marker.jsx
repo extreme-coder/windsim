@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Wrapper, google } from "@googlemaps/react-wrapper";
 import { propTypes } from "react-bootstrap/esm/Image";
 
-const Marker = ({ options, position, map, id, isSelected, hasData, onDrag }) => {
+const Marker = ({ options, position, map, id, isSelected, hasData, onDrag, select }) => {
   const [marker, setMarker] = useState();
+  const [mRendered, setMRendered] = useState(false);
   const iconBase = "/icons";
   const icons = {
     'unselected': iconBase + "/unselected.png",
@@ -20,6 +21,7 @@ const Marker = ({ options, position, map, id, isSelected, hasData, onDrag }) => 
         }));
     } 
     if (marker) {
+      setMRendered(true)
       marker.addListener("drag", onDrag);
     }
     return () => {
@@ -47,9 +49,16 @@ const Marker = ({ options, position, map, id, isSelected, hasData, onDrag }) => 
 
   useEffect(() => {
     if (marker) {
-      marker.setOptions({position});
+      marker.setOptions({ position });
     }
   }, [marker, position]);
+
+  useEffect(() => {
+    if (mRendered) {
+      marker.addListener("mouseover", () => { select(id, true) });
+      marker.addListener("mouseout", () => { select(id, false) });
+    }
+  })
   return null;
 }
 
