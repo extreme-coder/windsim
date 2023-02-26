@@ -85,7 +85,7 @@ const TurbineData = (props) => {
   return (
     <div>
       <p/>
-      {s && showCard && <Card style={{width: 'flex'}} bg={color} border={'danger'} onMouseEnter={() => { props.select(props.id, true); setColor('info') }} onMouseLeave={() => { props.select(props.id, false); setColor('') }}>
+      {s && showCard && <Card style={{width: 'flex'}} bg={(props.isSelected) ? 'info' : 'light'} border={'danger'} onMouseEnter={() => { props.select(props.id, true); setColor('info') }} onMouseLeave={() => { props.select(props.id, false); setColor('') }}>
         <Card.Body>
           <Card.Title>{`(${Math.round(props.coords.lat*100)/100}, ${Math.round(props.coords.lng*100)/100})`}</Card.Title>
           <Card.Text>{Math.round(100 * getChartData(s).map(a => a.speed).reduce((a, b) => a + b, 0) / 12) / 100.00} m/s - {speedDesc(s)}</Card.Text>
