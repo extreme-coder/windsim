@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Container, Form, Modal, Row, Tab, Tabs } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
+import AllRequests from "./AllRequests";
 import Marker from './Marker';
 import Request from "./Requests";
 import { useGetSpeedQuery, useAddAreaRequestMutation, useGetAreaRequestsQuery } from './services/windsim';
@@ -194,7 +195,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
                 {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} isSelected={c.selected} />)}
               </Tab>
               <Tab eventKey="requests" title="Calculations">
-                {requests && requests.data.map((r) => <Request data={r.attributes} addTurbine={addOptimalTurbine} />)}
+                {requests && <AllRequests data={requests.data} addTurbine={addOptimalTurbine} />}
               </Tab>
             </Tabs>
           </Col>
