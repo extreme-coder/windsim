@@ -130,6 +130,13 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
     return true
   };
 
+  const addOptimalTurbine = (lat, lng) => {
+    setCoords([...coords, { lat: lat, lng: lng, latLng: new google.maps.LatLng(lat, lng), id: Math.random() * 100.00, selected: false, hasData: true }])
+    setClicks([...clicks, new google.maps.LatLng(lat, lng)]);
+    setCurrentCoord({ lat: lat, lng: lng })
+    return true
+  }
+
   useEffect(() => {
     if (map) {
       ["click"].forEach((eventName) =>
@@ -187,7 +194,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
                 {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} isSelected={c.selected} />)}
               </Tab>
               <Tab eventKey="requests" title="Calculations">
-                {requests && requests.data.map((r) => <Request data={r.attributes} />)}
+                {requests && requests.data.map((r) => <Request data={r.attributes} addTurbine={addOptimalTurbine} />)}
               </Tab>
             </Tabs>
           </Col>

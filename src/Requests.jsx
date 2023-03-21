@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Card } from "react-bootstrap"
 
-export default function Request ({ data }) {
+export default function Request ({ data, addTurbine }) {
   return (
     <>
       <p/>
@@ -13,7 +13,7 @@ export default function Request ({ data }) {
           </Card.Title>
           <p/>
           <ButtonGroup>
-            <Button variant="outline-primary" >Add Turbine</Button>
+            <Button variant="outline-primary" onClick={()=>{addTurbine(data.highestX, data.highestY)}}>Add Turbine</Button>
           </ButtonGroup>
         </Card.Body>
       </Card>
