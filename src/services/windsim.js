@@ -6,7 +6,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const windsimApi = createApi({
   reducerPath: 'windsimApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://api.nation-builder.org/api/`,
+    baseUrl: `http://localhost:1337/api/`,
     prepareHeaders: (headers, { getState }) => {
       return headers
     },
@@ -33,6 +33,35 @@ export const windsimApi = createApi({
         return response.status
       },
     }),
+    getAreaRequests: builder.query({
+      query: (arg) => {
+        const { session_id } = arg;
+        return `area-requests?filters[session_id][$eq]=${session_id}`
+      },
+      responseHandler: "text",
+      transformResponse: (response: { data: Post }, meta, arg) => {
+        console.log(response)
+        return response
+      },
+      transformErrorResponse: (
+        response: { status: string | number },
+        meta,
+        arg
+      ) => {
+        console.log(response)
+        return response.status
+      },
+    }),
+    addAreaRequest: builder.mutation({
+      query(arg) {
+        const { body } = arg;
+        return {
+          url: `area-requests`,
+          method: 'POST',
+          body,
+        }
+      },
+    }),
   })
 })
 
@@ -40,4 +69,6 @@ export const windsimApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
   useGetSpeedQuery,
+  useGetAreaRequestsQuery,
+  useAddAreaRequestMutation,
 } = windsimApi

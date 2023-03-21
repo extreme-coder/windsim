@@ -4,6 +4,7 @@ import Chart from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2';
 import { Alert, Button, ButtonGroup, Card, Col, Container, Form, Modal, Row, Spinner } from "react-bootstrap";
 import Info from "./Info";
+import { Tooltip } from "react-tooltip";
 
 const TurbineData = (props) => {
 
@@ -106,7 +107,9 @@ const TurbineData = (props) => {
         </Card.Body>
       </Card>}
       {error && showAlert && <Alert variant="danger" onClose={handleCloseAlert} dismissible>
-        <Alert.Heading>No data available for this location</Alert.Heading>
+        <Alert.Heading>
+          No data available for this location
+        </Alert.Heading>
       </Alert>}
       {s && <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

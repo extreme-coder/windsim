@@ -6,6 +6,7 @@ import React, { ReactElement } from "react";
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Home';
+import Blog from './Blog';
 
 const render = (status: Status): ReactElement => {
   if (status === Status.LOADING) return <h3>{status} ..</h3>;
@@ -27,6 +28,7 @@ const App = () => {
             <Nav.Link href="home">Home</Nav.Link>
             <Nav.Link href="app">App</Nav.Link>
             <Nav.Link href="about">About Us</Nav.Link>
+            <Nav.Link href="blog">Blog</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -42,6 +44,9 @@ const App = () => {
             <Wrapper apiKey="AIzaSyBUskhPL5cY5JADoaPrmaqA5IgdTlg7KVY" render={render}>
               {<WindMap center={center} zoom={zoom} mapTypeId={mapTypeId} />}
             </Wrapper>
+          } />
+          <Route path='blog' element={
+            <Blog />
           } />
           <Route path='about' element={
             <div>
