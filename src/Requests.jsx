@@ -12,9 +12,9 @@ export default function Request ({ data, addTurbine }) {
             {data.status === 'COMPLETED' && <p>Optimal point at {Math.round(data.highestX*100)/100},{Math.round(data.highestY*100)/100}</p>}
           </Card.Title>
           <p/>
-          <ButtonGroup>
-            <Button variant="outline-primary" onClick={()=>{addTurbine(data.highestX, data.highestY)}}>Add Turbine</Button>
-          </ButtonGroup>
+          {data.status === 'COMPLETED' && <ButtonGroup>
+            <Button variant="outline-primary" onClick={() => { addTurbine(data.highestX, data.highestY) }}>Add Turbine</Button>
+          </ButtonGroup>}
         </Card.Body>
       </Card>
     </>
