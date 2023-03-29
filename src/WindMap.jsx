@@ -55,18 +55,23 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
   const [turbineData, setTurbineData] = useState([])
 
   const getBounds = (map) => {
-    let b = map.getBounds()
-    let north = b.Ja.lo
-    let south = b.Ja.hi
-    let west = b.Va.lo
-    let east = b.Va.hi
-    let centerX = (north + south) / 2
-    let centerY = (east + west) / 2
-    b.Ja.lo = centerX + (north - centerX) * 0.5
-    b.Ja.hi = centerX + (south - centerX) * 0.5
-    b.Va.lo = centerY + (west - centerY) * 0.5
-    b.Va.hi = centerY + (east - centerY) * 0.5
-    return b
+    const bounds = map.getBounds();
+    const center = bounds.getCenter();
+    const north = bounds.getNorthEast().lat();
+    const south = bounds.getSouthWest().lat();
+    const west = bounds.getSouthWest().lng();
+    const east = bounds.getNorthEast().lng();
+    const centerX = center.lat();
+    const centerY = center.lng();
+    const newNorth = centerX + (north - centerX) * 0.5;
+    const newSouth = centerX + (south - centerX) * 0.5;
+    const newWest = centerY + (west - centerY) * 0.5;
+    const newEast = centerY + (east - centerY) * 0.5;
+    const newBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(newSouth, newWest),
+      new google.maps.LatLng(newNorth, newEast)
+    );
+    return newBounds;
   }
 
   const addArea = ((e) => {
@@ -90,18 +95,18 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
   }
 
   const calculate = () => {
-    let b = rect.getBounds()
-    let y1 = b.Ja.lo
-    let y2 = b.Ja.hi
-    let x1 = b.Va.lo
-    let x2 = b.Va.hi
+    const bounds = rect.getBounds();
+    const north = bounds.getNorthEast().lat();
+    const south = bounds.getSouthWest().lat();
+    const west = bounds.getSouthWest().lng();
+    const east = bounds.getNorthEast().lng();
     addAreaRequest({
       body: {
         data: {
-          x1,
-          x2,
-          y1,
-          y2,
+          x1: west,
+          x2: east,
+          y1: south,
+          y2: north,
           step: step,
           cycles: cycles,
           name: name,
