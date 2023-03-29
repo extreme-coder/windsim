@@ -6,7 +6,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const windsimApi = createApi({
   reducerPath: 'windsimApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://localhost:1337/api/`,
+    baseUrl: `${process.env.REACT_APP_API_DOMAIN}/api/`,
     prepareHeaders: (headers, { getState }) => {
       return headers
     },
