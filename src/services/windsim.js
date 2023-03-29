@@ -38,6 +38,7 @@ export const windsimApi = createApi({
         const { session_id } = arg;
         return `area-requests?filters[session_id][$eq]=${session_id}`
       },
+      providesTags: (result, error, arg) => [{ type: 'area-requests', id: 'LIST' }],
       responseHandler: "text",
       transformResponse: (response: { data: Post }, meta, arg) => {
         console.log(response)
@@ -60,6 +61,10 @@ export const windsimApi = createApi({
           method: 'POST',
           body,
         }
+      },
+      invalidatesTags: (result, error, arg) => {
+        let tags = [{ type: 'area-requests', id: 'LIST' }]        
+        return tags
       },
     }),
   })
