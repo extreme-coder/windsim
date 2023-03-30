@@ -191,7 +191,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
           <div ref={ref} id="map" style={{ width: `100%`, height: `100%` }} />
           {coords.map((c, i) => (<Marker key={i} position={c.latLng} map={map} id={i} isSelected={c.selected} hasData={c.hasData} onDrag={onDrag} select={select} />))}
         </Col>
-        {requests && (coords.length > 0 || requests.data.length > 0)&& <>
+        <>
           <Col sm={6} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925}px` }}>
             <p/>
             <Tabs
