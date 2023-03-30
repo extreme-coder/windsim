@@ -103,10 +103,10 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
     addAreaRequest({
       body: {
         data: {
-          x1: west,
-          x2: east,
-          y1: south,
-          y2: north,
+          x1: south,
+          x2: north,
+          y1: west,
+          y2: east,
           step: step,
           cycles: cycles,
           name: name,
@@ -186,20 +186,50 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
   return <>
     <Container fluid>
       <Row>
-        <Col>
-          <div ref={ref} id="map" style={{ width: `${window.innerHeight * (5 / 4) * 0.925}px`, height: `${window.innerHeight * 0.925}px` }} />
+        <Col sm={6} >
+          <div ref={ref} id="map" style={{ width: `100%`, height: `100%` }} />
           {coords.map((c, i) => (<Marker key={i} position={c.latLng} map={map} id={i} isSelected={c.selected} hasData={c.hasData} onDrag={onDrag} select={select} />))}
         </Col>
         {requests && (coords.length > 0 || requests.data.length > 0)&& <>
-          <Col sm={2} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925}px` }}>
+          <Col sm={6} id={"customscroll"} style={{ overflow: 'auto', height: `${window.innerHeight * 0.925}px` }}>
             <p/>
             <Tabs
               defaultActiveKey="turbines"
             >
               <Tab eventKey="turbines" title="Turbines">
+                {coords.length === 0 && 
+                  <h4>No turbines yet. Click on the map to place one!</h4> }
+                  <Row>
+                    <Col>
                 {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} isSelected={c.selected} />)}
+                  </Col>
+                  {coords.length > 0 && <Col>
+                    {coords.length > 0 && <Bar
+                      options={{
+                        scales: {
+                          y: {
+                            beginAtZero: true
+                          }
+                        }
+                      }}
+                      data={{
+                        labels: chartData(turbineData).map(a => a.month),
+                        datasets: [{
+                          label: "Average Power Output (kWh)",
+                          data: chartData(turbineData).map(a => a.power)
+                        }]
+                      }}
+                    />}
+                    <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>         
+                  </Col>}
+                </Row>      
               </Tab>
               <Tab eventKey="requests" title="Calculations">
+              {areaMode && <ButtonGroup>
+            <Button variant="outline-primary" onClick={handleShow}>Calculate</Button>
+            <Button variant="outline-danger" onClick={removeArea}>Exit</Button>
+          </ButtonGroup>}
+          {!areaMode && <Button variant="outline-primary" onClick={addArea}>Add Area</Button>}
                 {requests && <AllRequests data={requests.data} addTurbine={addOptimalTurbine} />}
               </Tab>
             </Tabs>
@@ -208,38 +238,8 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
             {coords.map((c, i) => <TurbineData coords={c} id={i} removeMarker={useRemoveMarker} select={select} noData={noData} updateData={updateChartData} isSelected={c.selected} />)}
           </Col>*/}
         </>}
-        {coords.length > 0 && <Col>
-          {coords.length > 0 && <Bar
-            options={{
-              scales: {
-                y: {
-                  beginAtZero: true
-                }
-              }
-            }}
-            data={{
-              labels: chartData(turbineData).map(a => a.month),
-              datasets: [{
-                label: "Average Power Output (kWh)",
-                data: chartData(turbineData).map(a => a.power)
-              }]
-            }}
-          />}
-          <h5>{coords.length} turbine{(coords.length === 1) ? '' : 's'} generating {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (12))} kWh of electricity per month, enough to power {Math.round(chartData(turbineData).map(a => a.power).reduce((a, b) => a + b, 0) / (886 * 12))} home{(coords.length === 1) ? '' : 's'}</h5>
-          {areaMode && <ButtonGroup>
-            <Button variant="outline-primary" onClick={handleShow}>Calculate</Button>
-            <Button variant="outline-danger" onClick={removeArea}>Exit</Button>
-          </ButtonGroup>}
-          {!areaMode && <Button variant="outline-primary" onClick={addArea}>Add Area</Button>}
-        </Col>}
-        {coords.length === 0 && <Col>
-          <h4>No turbines yet. Click on the map to place one!</h4>
-          {areaMode && <ButtonGroup>
-            <Button variant="outline-primary" onClick={handleShow}>Calculate</Button>
-            <Button variant="outline-danger" onClick={removeArea}>Exit</Button>
-          </ButtonGroup>}
-          {!areaMode && <Button variant="outline-primary" onClick={addArea}>Add Area</Button>}
-        </Col>}
+        
+      
       </Row>
     </Container>
 
