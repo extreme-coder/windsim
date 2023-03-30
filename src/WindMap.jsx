@@ -4,7 +4,7 @@ import { Bar } from "react-chartjs-2";
 import AllRequests from "./AllRequests";
 import Marker from './Marker';
 import Request from "./Requests";
-import { useGetSpeedQuery, useAddAreaRequestMutation, useGetAreaRequestsQuery } from './services/windsim';
+import { useGetSpeedQuery, useAddAreaRequestMutation, useGetAreaRequestsQuery, useGetMessagesQuery } from './services/windsim';
 import TurbineData from "./TurbineData";
 
 function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLiteral; zoom: number; }) {
@@ -21,6 +21,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
   const [rect, setRect] = useState(null)
   const [addAreaRequest] = useAddAreaRequestMutation() 
   const { data: requests } = useGetAreaRequestsQuery({session_id: window.localStorage.getItem('session_id')})
+  const { data: messages } = useGetMessagesQuery(window.localStorage.getItem('session_id'))
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -224,7 +225,7 @@ function WindMap({ center, zoom, mapTypeId }: { center: google.maps.LatLngLitera
                   </Col>}
                 </Row>      
               </Tab>
-              <Tab eventKey="requests" title="Calculations">
+              <Tab eventKey="requests" title="Optimizations">
               {areaMode && <ButtonGroup>
             <Button variant="outline-primary" onClick={handleShow}>Calculate</Button>
             <Button variant="outline-danger" onClick={removeArea}>Exit</Button>

@@ -8,10 +8,7 @@ export default function AllRequests({ data, addTurbine }) {
       {data.map((request) => (
         <Request data={request.attributes} addTurbine={addTurbine} />
       ))}
-      <p/>
-      <Button size="lg" variant="outline-secondary" onClick={()=>(window.location.reload())}>
-        Refresh
-      </Button>
+      <p/>      
     </>
   )
 }

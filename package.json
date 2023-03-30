@@ -22,6 +22,7 @@
     "react-tooltip": "^5.8.3",
     "redux": "^4.2.0",
     "sass": "^1.58.0",
+    "socket.io-client": "^4.6.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

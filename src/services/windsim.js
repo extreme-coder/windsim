@@ -1,6 +1,7 @@
 // Need to use the React-specific entry point to import createApi
 import pluralize from 'pluralize';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { io } from 'socket.io-client';
 
 // Define a service using a base URL and expected endpoints
 export const windsimApi = createApi({
@@ -67,6 +68,51 @@ export const windsimApi = createApi({
         return tags
       },
     }),
+    getMessages: builder.query({
+      query: (sessionId) => `turbines`,
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, dispatch }
+      ) {
+        if(!arg) return;
+        // create a websocket connection when the cache subscription starts
+        //const ws = new WebSocket('ws://localhost:1337')
+        const socket = io(process.env.REACT_APP_API_DOMAIN);
+        try {
+          socket.on('connect', () => {
+            console.log("connected to socket")            
+            //join the sessionId room
+            socket.emit("join", { sessionId:arg }, (error) => {             
+              console.log("joined the room:" + arg)
+              if (error) return alert(error);
+            });
+          });
+
+          // wait for the initial query to resolve before proceeding
+          await cacheDataLoaded           
+          // when data is received from the socket connection to the server,
+          // if it is a message and for the appropriate channel,
+          // update our query result with the received message
+          socket.on('progress', (message) => {                        
+            dispatch({
+              type: `windsimApi/invalidateTags`,
+              payload: [{ type: 'area-requests', id: 'LIST' }],
+            });              
+          });
+
+     
+
+        } catch {
+          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
+          // in which case `cacheDataLoaded` will throw
+        }
+        // cacheEntryRemoved will resolve when the cache subscription is no longer active
+        await cacheEntryRemoved
+        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+        socket.off('connect');
+        socket.off('message');
+      },
+    })
   })
 })
 
@@ -76,4 +122,5 @@ export const {
   useGetSpeedQuery,
   useGetAreaRequestsQuery,
   useAddAreaRequestMutation,
+  useGetMessagesQuery
 } = windsimApi
