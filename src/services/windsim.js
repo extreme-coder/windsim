@@ -37,7 +37,7 @@ export const windsimApi = createApi({
     getAreaRequests: builder.query({
       query: (arg) => {
         const { session_id } = arg;
-        return `area-requests?filters[session_id][$eq]=${session_id}`
+        return `area-requests?filters[session_id][$eq]=${session_id}&sort=createdAt:desc`
       },
       providesTags: (result, error, arg) => [{ type: 'area-requests', id: 'LIST' }],
       responseHandler: "text",
