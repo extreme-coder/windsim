@@ -45,9 +45,9 @@ const App = () => {
               {<WindMap center={center} zoom={zoom} mapTypeId={mapTypeId} />}
             </Wrapper>
           } />
-          <Route path='blog' element={
+          {/*<Route path='blog' element={
             <Blog />
-          } />
+          } />*/}
           <Route path='about' element={
             <div>
               <h1>Created by Aryan Singh for the Greater Vancouver Regional Science Fair</h1>
