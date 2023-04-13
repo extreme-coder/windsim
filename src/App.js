@@ -28,7 +28,6 @@ const App = () => {
             <Nav.Link href="home">Home</Nav.Link>
             <Nav.Link href="app">App</Nav.Link>
             <Nav.Link href="about">About Us</Nav.Link>
-            <Nav.Link href="blog">Blog</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
